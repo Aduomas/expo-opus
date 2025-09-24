@@ -8,7 +8,49 @@ __mocks__
 __tests__
 
 /babel.config.js
+
+# Android build artifacts and directories
 /android/src/androidTest/
 /android/src/test/
 /android/build/
+/android/.cxx/
+/android/app/build/
+android.iml
+local.properties
+.gradle
+
+# iOS build artifacts
+/ios/build/
+DerivedData
+
+# Example app
 /example/
+
+# Build and cache directories
+build/
+.expo/
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
