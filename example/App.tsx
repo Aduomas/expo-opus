@@ -45,16 +45,15 @@ export default function App() {
       const packetSize = 40;
       
       try {
-        const decodedPCM = Opus.opusDecode(opusBytes, packetSize);
+        // Using opusDecodeToSamples for proper Int16Array typed array
+        const decodedSamples = Opus.opusDecodeToSamples(opusBytes, packetSize);
         
-        if (decodedPCM === undefined || decodedPCM === null) {
+        if (decodedSamples === undefined || decodedSamples === null) {
           setResult('Decode failed: Native function returned undefined/null');
-        } else if (decodedPCM.length === 0) {
+        } else if (decodedSamples.length === 0) {
           setResult('Decode completed but no samples were decoded');
         } else {
-          // PCM bytes / 2 = samples (16-bit audio = 2 bytes per sample)
-          const sampleCount = decodedPCM.length / 2;
-          setResult(`Successfully decoded! PCM bytes: ${decodedPCM.length}, Samples: ${sampleCount}`);
+          setResult(`Successfully decoded! Samples: ${decodedSamples.length}, Buffer size: ${decodedSamples.byteLength} bytes`);
         }
       } catch (decodeError) {
         setResult(`Decode failed: ${decodeError instanceof Error ? decodeError.message : 'Unknown decode error'}`);

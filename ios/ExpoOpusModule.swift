@@ -31,6 +31,7 @@ public class ExpoOpusModule: Module {
             }
             
             if decodedSamples > 0 {
+                // Convert Int16 samples to Data (raw bytes)
                 let pcmData = Data(bytes: pcm, count: decodedSamples * MemoryLayout<Int16>.size)
                 allDecodedPCM.append(pcmData)
             }
