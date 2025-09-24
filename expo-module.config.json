@@ -1,0 +1,16 @@
+{
+  "platforms": [
+    "apple",
+    "android"
+  ],
+  "apple": {
+    "modules": [
+      "ExpoOpusModule"
+    ]
+  },
+  "android": {
+    "modules": [
+      "expo.modules.opus.ExpoOpusModule"
+    ]
+  }
+}
