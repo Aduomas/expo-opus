@@ -21,7 +21,10 @@
     "expo-opus",
     "ExpoOpus"
   ],
-  "repository": "https://github.com/Aduomas/expo-opus",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aduomas/expo-opus.git"
+  },
   "bugs": {
     "url": "https://github.com/Aduomas/expo-opus/issues"
   },
