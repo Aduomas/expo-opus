@@ -11,6 +11,9 @@ OpusDecoder *decoder = nullptr;
 extern "C" JNIEXPORT jint JNICALL
 Java_expo_modules_opus_OpusVedro_decoderInit(JNIEnv *env, jobject thiz, jint sample_rate, jint num_channels)
 {
+    if (decoder) {
+        return 0;
+    }
     int size = opus_decoder_get_size(num_channels);
     decoder = (OpusDecoder *)malloc((size_t)size);
     int ret = opus_decoder_init(decoder, sample_rate, num_channels);
@@ -20,6 +23,12 @@ Java_expo_modules_opus_OpusVedro_decoderInit(JNIEnv *env, jobject thiz, jint sam
 extern "C" JNIEXPORT jint JNICALL
 Java_expo_modules_opus_OpusVedro_decode(JNIEnv *env, jobject thiz, jbyteArray bytes, jbyteArray output)
 {
+    if (!decoder) {
+        int size = opus_decoder_get_size(1);
+        decoder = (OpusDecoder *)malloc((size_t)size);
+        opus_decoder_init(decoder, 16000, 1);
+    }
+    
     jbyte *nativeBytes = env->GetByteArrayElements(bytes, 0);
     jbyte *nativeOutput = env->GetByteArrayElements(output, 0);
     jint length = env->GetArrayLength(bytes);

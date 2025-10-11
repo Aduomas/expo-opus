@@ -26,7 +26,7 @@ export default function App() {
   const testOpusDecoding = async (asset: any) => {
     try {
       // Initialize the decoder
-      Opus.opusStart();
+      // Opus.opusStart();
       setResult('Decoder initialized...');
 
       

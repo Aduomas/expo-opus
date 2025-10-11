@@ -7,11 +7,19 @@ public class ExpoOpusModule: Module {
     Name("ExpoOpus")
       
     Function("opusStart") {
+        if self.opusDecoder != nil {
+            return
+        }
         var error: Int32 = 0
         self.opusDecoder = opus_decoder_create(16000, 1, &error)
     }
     
     Function("opusDecode") { (concatenatedPackets: Data, packetSize: Int) -> Data in
+        if self.opusDecoder == nil {
+            var error: Int32 = 0
+            self.opusDecoder = opus_decoder_create(16000, 1, &error)
+        }
+        
         var allDecodedPCM = Data()
         let packetCount = concatenatedPackets.count / packetSize
         
