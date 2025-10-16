@@ -1,51 +1,35 @@
-# For more information about using CMake with Android Studio, read the
-# documentation: https://d.android.com/studio/projects/add-native-code.html
+# CMakeLists.txt
+cmake_minimum_required(VERSION 3.13)
+project(opusvedro_project LANGUAGES C CXX)
 
-# Sets the minimum version of CMake required to build the native library.
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
-cmake_minimum_required(VERSION 3.4.1)
+# Build the JNI shared library
+add_library(opusvedro SHARED
+  opusvedro.cpp
+)
 
-# Creates and names a library, sets it as either STATIC
-# or SHARED, and provides the relative paths to its source code.
-# You can define multiple libraries, and CMake builds them for you.
-# Gradle automatically packages shared libraries with your APK.
+# Modern, scoped settings (react-native style)
+target_compile_features(opusvedro PRIVATE cxx_std_17)
+target_compile_options(opusvedro PRIVATE -fexceptions -frtti)
+set_target_properties(opusvedro PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-add_library( # Sets the name of the library.
-             opusvedro
+# Local includes
+target_include_directories(opusvedro PRIVATE
+  ${CMAKE_CURRENT_LIST_DIR}/include
+)
 
-             # Sets the library as a shared library.
-             SHARED
+# Prebuilt Opus .so (per-ABI)
+add_library(opus SHARED IMPORTED GLOBAL)
+set_target_properties(opus PROPERTIES
+  IMPORTED_LOCATION "${CMAKE_CURRENT_LIST_DIR}/lib/${ANDROID_ABI}/libopus.so"
+)
 
-             # Provides a relative path to your source file(s).
-             opusvedro.cpp)
+# Android system log
+find_library(log-lib log REQUIRED)
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
-
-#add other prebuilt libraries
-add_library(opus SHARED IMPORTED)
-
-set_target_properties(opus PROPERTIES IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/lib/${ANDROID_ABI}/libopus.so)
-
-# Searches for a specified prebuilt library and stores the path as a
-# variable. Because CMake includes system libraries in the search path by
-# default, you only need to specify the name of the public NDK library
-# you want to add. CMake verifies that the library exists before
-# completing its build.
-
-find_library( # Sets the name of the path variable.
-              log-lib
-
-              # Specifies the name of the NDK library that
-              # you want CMake to locate.
-              log )
-
-# Specifies libraries CMake should link to your target library. You
-# can link multiple libraries, such as libraries you define in this
-# build script, prebuilt third-party libraries, or system libraries.
-
-target_link_libraries( # Specifies the target library.
-                       opusvedro
-                       opus
-                       # Links the target library to the log library
-                       # included in the NDK.
-                       ${log-lib} )
+# Link everything
+target_link_libraries(opusvedro PRIVATE
+  opus
+  ${log-lib}
+)
