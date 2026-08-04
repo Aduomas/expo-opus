@@ -1,6 +1,6 @@
 {
   "name": "expo-opus",
-  "version": "1.3.0",
+  "version": "1.4.1",
   "description": "Opus decoder for react native",
   "main": "build/index.js",
   "types": "build/index.d.ts",
