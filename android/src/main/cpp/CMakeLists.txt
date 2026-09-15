@@ -13,6 +13,8 @@ add_library(opusvedro SHARED
 target_compile_features(opusvedro PRIVATE cxx_std_17)
 target_compile_options(opusvedro PRIVATE -fexceptions -frtti)
 set_target_properties(opusvedro PROPERTIES POSITION_INDEPENDENT_CODE ON)
+# 16 KB page alignment for Android 15+ devices, independent of the host NDK default
+target_link_options(opusvedro PRIVATE -Wl,-z,max-page-size=16384)
 
 # Local includes
 target_include_directories(opusvedro PRIVATE
